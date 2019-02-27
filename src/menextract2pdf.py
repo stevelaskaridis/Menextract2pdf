@@ -174,7 +174,11 @@ def mendeley2pdf(fn_db, dir_pdf):
     highlights = get_highlights_from_db(db)
     annotations_all = get_notes_from_db(db, highlights)
     for fn, annons in annotations_all.items():
-        processpdf(fn, os.path.join(dir_pdf, os.path.basename(fn)), annons)
+        try:
+            processpdf(fn, os.path.join(dir_pdf, os.path.basename(fn)), annons)
+        except PyPDF2.utils.PdfReadError as e:
+            print("ERROR: {dir_pdf}, {e}".format(dir_pdf=dir_pdf, e=e))
+
 
 if __name__ == "__main__":
     import argparse
